@@ -89,13 +89,13 @@ _setView(evt) {
               height: "90vh",
               width: "100vw"
             }}
-            center={[-118.325160,34.031410]}
+            center={[-118.482,34.026]}
             >
           <Layer
             type="symbol"
             id="marker"
             layout={{ "icon-image": "marker-15" }}>
-            <Feature coordinates={[-118.325160,34.031410]}/>
+            <Feature coordinates={[-118.482,34.026]}/>
           </Layer>
           </ReactMapboxGl>
         </div>
