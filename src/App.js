@@ -4,6 +4,7 @@ import './App.css';
 import clientAuth from './clientAuth'
 import mapboxgl from 'mapbox-gl';
 import ReactMapboxGl, {Layer, Feature} from "react-mapbox-gl"
+import TheMap from './TheMap'
 
 
 
@@ -22,7 +23,8 @@ class App extends Component {
     const currentUser = clientAuth.getCurrentUser()
     this.setState({
       currentUser: currentUser,
-      loggedIn: !!currentUser
+      loggedIn: !!currentUser,
+      view: 'home'
     })
   }
 
@@ -40,7 +42,8 @@ class App extends Component {
     clientAuth.login(credentials).then((user) => {
       this.setState({
         currentUser: user,
-        loggedIn: true
+        loggedIn: true,
+        view: 'home'
       })
     })
   }
@@ -71,38 +74,28 @@ _setView(evt) {
         </div>
         <div className="row" id="navbar">
           <div className="column column-offset-55">
+            {!this.state.loggedIn && (
             <button name='signup' className="button button-clear" onClick={this._setView.bind(this)}>Sign Up</button>
+            )}
+            {!this.state.loggedIn && (
             <button name='login' className="button button-clear" onClick={this._setView.bind(this)}>Login</button>
+            )}
+            {this.state.loggedIn && (
             <button className="button button-clear" onClick={this._logOut.bind(this)}>Log Out</button>
+            )}
           </div>
         </div>
         {{ //outer: jsx inner": object
+          home: '',
           login: <LogIn onLogin={this._logIn.bind(this)} />,
           signup: <SignUp onSignup={this._signUp.bind(this)} />
         }[this.state.view]}
-
-        <div id="map">
-          <ReactMapboxGl
-            style="mapbox://styles/mapbox/light-v9"
-            accessToken="pk.eyJ1IjoiY2xhYXJhZnkiLCJhIjoiY2ozZ2RjZHo1MDA0bjMzanl3eTdrbTV6bSJ9.gX0zPVpXPIFQYzrexV8XoA"
-            containerStyle={{
-              height: "90vh",
-              width: "100vw"
-            }}
-            center={[-118.482,34.026]}
-            >
-          <Layer
-            type="symbol"
-            id="marker"
-            layout={{ "icon-image": "marker-15" }}>
-            <Feature coordinates={[-118.482,34.026]}/>
-          </Layer>
-          </ReactMapboxGl>
-        </div>
+        <TheMap />
       </div>
     )
   }
 }
+
 ////////////////////////////////////////////////SUBCLASSES
 ////////////////////////////////////////////////SignUp Class
 class SignUp extends React.Component {
