@@ -75,7 +75,13 @@ class TheMap extends Component {
           layout={{ "icon-image": "marker-15" }}>
           <Feature coordinates={[-118.482,34.026]}/>
         </Layer>
-        {parkings}
+
+        <Layer
+          type="line"
+          layout={{ "line-cap": "round", "line-join": "round" }}
+          paint={{ "line-color": "#4790E5", "line-width": 12 }}>
+          <Feature coordinates={[-118.481635,34.025779], [-118.407,34.053]}/>
+        </Layer>
         </ReactMapboxGl>
       </div>
   )
