@@ -1,9 +1,11 @@
 //Map component
 import React, {Component} from 'react'
 import mapboxgl from 'mapbox-gl'
-import ReactMapboxGl, {Layer, Feature, GeoJSONLayer} from "react-mapbox-gl"
+import './App.css'
+import ReactMapboxGl, {Source, Layer, Feature, GeoJSONLayer, Popup, Marker} from "react-mapbox-gl"
 import clientAuth from './clientAuth.js'
 import parkingsConnect from './parkingsConnect.js'
+import maki from 'maki'
 
 class TheMap extends Component {
 /////////////////////////////////////////////////CONSTRUCTOR
@@ -22,40 +24,40 @@ class TheMap extends Component {
     })
   }
 /////////////////////////////////////////////////CUSTOM FUNCTIONS
+  _showPopup() {
+    console.log("show popup?")
+  }
 /////////////////////////////////////////////////RENDER
   render() {
     console.log(this.state.parkings)
-
-    const parkings = this.state.parkings.map((parking, i) => {
+    const streetLines = this.state.parkings.map((parking, i) => {
+      var start = parking.startCoordinates
+      var end = parking.endCoordinates
+      var lineColor = "#00FFFF"
+      if (parking.noParking == true) {
+        lineColor = "#DC143C"
+      }
       return (
-        <GeoJSONLayer
+          <GeoJSONLayer
           key = {i}
-          type = "line"
-          source = {{
-            "type": "geojson",
-            data: {
-              "type": "Feature",
-              "geometry": {
-                "type": "line",
-                "coordinates": [
-                  [34.013565, -118.495505],
-                  [34.015107, -118.493584]
-                ]
-              }
-            }
-          }}
-          layout= {{
-            'line-join': 'round',
-            'line-cap': 'round'
-          }}
-          paint ={{
-            'line-color': '#FFFFFF',
-            'line-width': 10
-          }}>
-        </GeoJSONLayer>
+          data={{
+                "type": "Feature",
+                "properties": {
+                  "description": "Street Park!"
+                },
+                "geometry":{
+                  "type":"LineString",
+                  "coordinates": [
+                    start,
+                    end
+                  ]
+                }
+              }}
+          lineLayout= {{ "line-cap": "round", "line-join": "round" }}
+          linePaint={{ "line-color": lineColor, "line-width": 3 }}
+          />
       )
     })
-
 
     return (
       <div id="map">
@@ -66,27 +68,55 @@ class TheMap extends Component {
             height: "90vh",
             width: "100vw"
           }}
-          center={[-118.482,34.026]}
+          center={[-118.495196, 34.012806]}>
+        {streetLines}
+        {/* <GeoJSONLayer
+          data={{
+                "type": "Feature",
+                "properties": {},
+                "geometry":{
+                  "type":"LineString",
+                  "coordinates": [
+                    [-118.495537,34.013633],
+                    [-118.493619,34.015078]
+                  ]
+                }
+              }}
+          lineLayout= {{ "line-cap": "round", "line-join": "round" }}
+          linePaint={{ "line-color": "#00FFFF", "line-width": 2 }}
+        /> */}
+        <Marker
+          coordinates={[-118.495196, 34.012806]}
+          anchor="bottom"
+          onClick = {this._showPopup.bind(this)}
           >
+        </Marker>
 
-        <Layer
+        {/* <Layer
           type="symbol"
           id="marker"
           layout={{ "icon-image": "marker-15" }}>
-          <Feature coordinates={[-118.482,34.026]}/>
+          <Feature coordinates={[-118.495196, 34.012806]}/>
         </Layer>
 
         <Layer
-          type="line"
-          layout={{ "line-cap": "round", "line-join": "round" }}
-          paint={{ "line-color": "#4790E5", "line-width": 12 }}>
-          <Feature coordinates={[-118.481635,34.025779], [-118.407,34.053]}/>
+          type="symbol"
+          id="marker-2"
+          layout={{ "icon-image": "marker-15" }}>
+          <Feature coordinates={[-118.495537,34.013633]}/>
         </Layer>
+
+        <Layer
+          type="symbol"
+          id="marker-3"
+          layout={{ "icon-image": "marker-15" }}>
+          <Feature coordinates={[-118.493619,34.015078]}/>
+        </Layer> */}
+
         </ReactMapboxGl>
       </div>
-  )
+    )
   }
-
 
 }
 

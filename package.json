@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "jwt-decode": "^2.2.0",
+    "maki": "^2.1.0",
     "mapbox-gl": "^0.37.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
