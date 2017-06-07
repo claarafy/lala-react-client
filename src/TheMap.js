@@ -32,6 +32,9 @@ class TheMap extends Component {
     })
     console.log("clicked mark's parkingId", this.state.parkingId)
   }
+  _getLocation(locationInfo) {
+    console.log("getting location infromation", locationInfo)
+  }
 /////////////////////////////////////////////////RENDER
   render() {
     console.log("this location's parkings are:", this.state.parkings)
@@ -102,7 +105,7 @@ class TheMap extends Component {
           style="mapbox://styles/mapbox/light-v9"
           accessToken="pk.eyJ1IjoiY2xhYXJhZnkiLCJhIjoiY2ozZ2RjZHo1MDA0bjMzanl3eTdrbTV6bSJ9.gX0zPVpXPIFQYzrexV8XoA"
           containerStyle={{
-            height: "90vh",
+            height: "70vh",
             width: "100vw"
           }}
           center={[-118.495196, 34.012806]}>
@@ -118,16 +121,43 @@ class TheMap extends Component {
             <Feature coordinates={[-118.495196, 34.012806]}/>
           </Layer>
         </ReactMapboxGl>
+        <Location onSearchLocation={this._getLocation.bind(this)}/>
       </div>
     )
   }
 }
 class Location extends Component {
-/////////////////////////////////////////////////CONSTRUCTOR
-  constructor(props) {
-    super(props)
+// /////////////////////////////////////////////////CONSTRUCTOR
+//   constructor(props) {
+//     super(props)
+//     this.state = {
+//       locationId: ""
+//     }
+//   }
+// /////////////////////////////////////////////////LIFECYCLE
+//   componenetDidMount() {
+//
+//   }
+/////////////////////////////////////////////////CUSTOM FUNCTIONS
+  _searchLocation(evt){
+    evt.preventDefault()
+    console.log("Setting the location..")
+    const locationInfo = {
+      name: this.refs.location.value
+    }
+    this.props.onSearchLocation(locationInfo)
   }
-
+/////////////////////////////////////////////////RENDER
+  render() {
+    return(
+      <div id="location">
+        <form id="location-form" onSubmit={this._searchLocation.bind(this)}>
+          <input type="text" placeholder="Where to?" ref="location"/>
+          <button type="submit">Search Location</button>
+        </form>
+      </div>
+    )
+  }
 }
 
 export default TheMap

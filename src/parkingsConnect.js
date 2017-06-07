@@ -1,5 +1,6 @@
 import axios from 'axios'
-// import jwt_decode from 'jwt-decode'
+import jwt_decode from 'jwt-decode'
+import clientAuth from './clientAuth'
 
 axios.defaults.baseURL = 'http://localhost:3001'
 
