@@ -12,9 +12,11 @@ class TheMap extends Component {
   constructor() {
     super()
     this.state = {
+      setCoordinates: [-118.495196, 34.012806], //Santa Monica
       locationId: "",
       parkings: [],
       parkingId: ""
+
     }
   }
 /////////////////////////////////////////////////LIFECYCLE
@@ -30,10 +32,18 @@ class TheMap extends Component {
     this.setState({
       parkingId: parking._id
     })
-    // console.log("clicked mark's parkingId", this.state.parkingId)
+
   }
-  _getLocation(locationInfo) {
-    // console.log("getting location infromation", locationInfo)
+  _searchLocation(evt){
+    evt.preventDefault()
+    const locationInfo = {
+      name: this.refs.location.value,
+      coordinates: []
+    }
+    console.log(locationInfo)
+    parkingsConnect.addLocation(locationInfo).then((res)=> {
+      console.log(res)
+    })
   }
 /////////////////////////////////////////////////RENDER
   render() {
@@ -92,12 +102,13 @@ class TheMap extends Component {
           offset={{
             'bottom-left': [12, -38],  'bottom': [0, -38], 'bottom-right': [-12, -38]
           }}>
-          <p style={{fontSize:"5px"}}>{parking._id}<br/>{parking.streetName}</p>
+          <div className="parking-popups">
+            <p style={{fontSize:"5px"}}>{parking._id}<br/>{parking.streetName}</p>
+          </div>
         </Popup>
         )
       }
     })
-    // console.log("Parking popups are", parkingPopups)
 /////////////////////////////////////RENDER'S RETURN
     return (
       <div id="map">
@@ -108,7 +119,7 @@ class TheMap extends Component {
             height: "70vh",
             width: "100vw"
           }}
-          center={[-118.495196, 34.012806]}>
+          center={this.state.setCoordinates}>
           {streetLines}
           {streetMarks}
           {parkingPopups}
@@ -122,45 +133,16 @@ class TheMap extends Component {
           </Layer> */}
         </ReactMapboxGl>
 
-        <Location onSearchLocation={this._getLocation.bind(this)}/>
+        <div id="location">
+          <form id="location-form" onSubmit={this._searchLocation.bind(this)}>
+            <input type="text" placeholder="Where to?" ref="location"/>
+            <button type="submit">Search Location</button>
+          </form>
+        </div>
       </div>
     )
   }
 }
-class Location extends Component {
-// /////////////////////////////////////////////////CONSTRUCTOR
-  constructor(props) {
-    super(props)
-    this.state = {
-      locations: [],
-      locationId: ""
-    }
-  }
-// /////////////////////////////////////////////////LIFECYCLE
-  componenetDidMount() {
 
-  }
-/////////////////////////////////////////////////CUSTOM FUNCTIONS
-  _searchLocation(evt){
-    evt.preventDefault()
-
-    const locationInfo = {
-      name: this.refs.location.value
-    }
-    this.props.onSearchLocation(locationInfo)
-  }
-/////////////////////////////////////////////////RENDER
-  render() {
-    console.log("all the locations in db:", this.state.locations)
-    return(
-      <div id="location">
-        <form id="location-form" onSubmit={this._searchLocation.bind(this)}>
-          <input type="text" placeholder="Where to?" ref="location"/>
-          <button type="submit">Search Location</button>
-        </form>
-      </div>
-    )
-  }
-}
 
 export default TheMap

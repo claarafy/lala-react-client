@@ -12,6 +12,14 @@ const parkingsConnect = {
       method: 'get'
     })
   },
+  addLocation: (locationInfo) => {
+    console.log(locationInfo)
+    return axios({
+      url: '/api/locations',
+      method: 'post',
+      data: locationInfo
+    })
+  },
   getParkings: () => {
     return axios({
       url: '/api/parkings',
