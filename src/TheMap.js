@@ -30,10 +30,10 @@ class TheMap extends Component {
     this.setState({
       parkingId: parking._id
     })
-    console.log("clicked mark's parkingId", this.state.parkingId)
+    // console.log("clicked mark's parkingId", this.state.parkingId)
   }
   _getLocation(locationInfo) {
-    console.log("getting location infromation", locationInfo)
+    // console.log("getting location infromation", locationInfo)
   }
 /////////////////////////////////////////////////RENDER
   render() {
@@ -97,8 +97,8 @@ class TheMap extends Component {
         )
       }
     })
-    console.log("Parking popups are", parkingPopups)
-
+    // console.log("Parking popups are", parkingPopups)
+/////////////////////////////////////RENDER'S RETURN
     return (
       <div id="map">
         <ReactMapboxGl
@@ -114,13 +114,14 @@ class TheMap extends Component {
           {parkingPopups}
 
           {/* GA Marker */}
-           <Layer
+           {/* <Layer
             type="symbol"
             id="marker"
             layout={{ "icon-image": "favicon.ico" }}>
             <Feature coordinates={[-118.495196, 34.012806]}/>
-          </Layer>
+          </Layer> */}
         </ReactMapboxGl>
+
         <Location onSearchLocation={this._getLocation.bind(this)}/>
       </div>
     )
@@ -128,20 +129,21 @@ class TheMap extends Component {
 }
 class Location extends Component {
 // /////////////////////////////////////////////////CONSTRUCTOR
-//   constructor(props) {
-//     super(props)
-//     this.state = {
-//       locationId: ""
-//     }
-//   }
+  constructor(props) {
+    super(props)
+    this.state = {
+      locations: [],
+      locationId: ""
+    }
+  }
 // /////////////////////////////////////////////////LIFECYCLE
-//   componenetDidMount() {
-//
-//   }
+  componenetDidMount() {
+
+  }
 /////////////////////////////////////////////////CUSTOM FUNCTIONS
   _searchLocation(evt){
     evt.preventDefault()
-    console.log("Setting the location..")
+
     const locationInfo = {
       name: this.refs.location.value
     }
@@ -149,6 +151,7 @@ class Location extends Component {
   }
 /////////////////////////////////////////////////RENDER
   render() {
+    console.log("all the locations in db:", this.state.locations)
     return(
       <div id="location">
         <form id="location-form" onSubmit={this._searchLocation.bind(this)}>
