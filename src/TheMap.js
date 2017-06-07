@@ -12,6 +12,7 @@ class TheMap extends Component {
   constructor() {
     super()
     this.state = {
+      locationId: "",
       parkings: [],
       parkingId: ""
     }
@@ -33,7 +34,7 @@ class TheMap extends Component {
   }
 /////////////////////////////////////////////////RENDER
   render() {
-    console.log(this.state.parkings)
+    console.log("this location's parkings are:", this.state.parkings)
     const streetLines = this.state.parkings.map((parking, i) => {
       var start = parking.startCoordinates
       var end = parking.endCoordinates
@@ -88,7 +89,7 @@ class TheMap extends Component {
           offset={{
             'bottom-left': [12, -38],  'bottom': [0, -38], 'bottom-right': [-12, -38]
           }}>
-          <p style={{fontSize:"5px"}}>{parking.streetName}<br/>{parking._id}</p>
+          <p style={{fontSize:"5px"}}>{parking._id}<br/>{parking.streetName}</p>
         </Popup>
         )
       }
@@ -105,39 +106,28 @@ class TheMap extends Component {
             width: "100vw"
           }}
           center={[-118.495196, 34.012806]}>
-        {streetLines}
-        {streetMarks}
-        {parkingPopups}
-        {/* <GeoJSONLayer
-          data={{
-                "type": "Feature",
-                "properties": {},
-                "geometry":{
-                  "type":"LineString",
-                  "coordinates": [
-                    [-118.495537,34.013633],
-                    [-118.493619,34.015078]
-                  ]
-                }
-              }}
-          lineLayout= {{ "line-cap": "round", "line-join": "round" }}
-          linePaint={{ "line-color": "#00FFFF", "line-width": 2 }}
-        /> */}
+          {streetLines}
+          {streetMarks}
+          {parkingPopups}
 
-         <Layer
-          type="symbol"
-          id="marker"
-          layout={{ "icon-image": "favicon.ico" }}>
-          <Feature coordinates={[-118.495196, 34.012806]}/>
-        </Layer>
-
-
+          {/* GA Marker */}
+           <Layer
+            type="symbol"
+            id="marker"
+            layout={{ "icon-image": "favicon.ico" }}>
+            <Feature coordinates={[-118.495196, 34.012806]}/>
+          </Layer>
         </ReactMapboxGl>
       </div>
     )
   }
+}
+class Location extends Component {
+/////////////////////////////////////////////////CONSTRUCTOR
+  constructor(props) {
+    super(props)
+  }
 
 }
-
 
 export default TheMap
