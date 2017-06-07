@@ -24,8 +24,8 @@ class TheMap extends Component {
     })
   }
 /////////////////////////////////////////////////CUSTOM FUNCTIONS
-  _showPopup() {
-    console.log("show popup?")
+  _showPopup(parking) {
+    console.log(parking.startCoordinates, parkings.endCoordinates)
   }
 /////////////////////////////////////////////////RENDER
   render() {
@@ -54,8 +54,21 @@ class TheMap extends Component {
                 }
               }}
           lineLayout= {{ "line-cap": "round", "line-join": "round" }}
-          linePaint={{ "line-color": lineColor, "line-width": 3 }}
-          />
+          linePaint={{ "line-color": lineColor, "line-width": 3 }}>
+          </GeoJSONLayer>
+      )
+    })
+    const streetMarks = this.state.parkings.map((parking,i) => {
+      var start = parking.startCoordinates
+      return(
+        <Layer
+          type="symbol"
+          key={i}
+          layout={{ "icon-image": "marker-15" }}>
+          <Feature
+            coordinates={start}
+            onClick={this._showPopup.bind(this, parking)}/>
+        </Layer>
       )
     })
 
@@ -70,6 +83,7 @@ class TheMap extends Component {
           }}
           center={[-118.495196, 34.012806]}>
         {streetLines}
+        {streetMarks}
         {/* <GeoJSONLayer
           data={{
                 "type": "Feature",
@@ -85,12 +99,12 @@ class TheMap extends Component {
           lineLayout= {{ "line-cap": "round", "line-join": "round" }}
           linePaint={{ "line-color": "#00FFFF", "line-width": 2 }}
         /> */}
-        <Marker
+        {/* <Marker
           coordinates={[-118.495196, 34.012806]}
           anchor="bottom"
           onClick = {this._showPopup.bind(this)}
           >
-        </Marker>
+        </Marker> */}
 
         {/* <Layer
           type="symbol"
