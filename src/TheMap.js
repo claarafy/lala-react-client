@@ -12,7 +12,8 @@ class TheMap extends Component {
   constructor() {
     super()
     this.state = {
-      parkings: []
+      parkings: [],
+      parkingId: ""
     }
   }
 /////////////////////////////////////////////////LIFECYCLE
@@ -25,7 +26,10 @@ class TheMap extends Component {
   }
 /////////////////////////////////////////////////CUSTOM FUNCTIONS
   _showPopup(parking) {
-    console.log(parking.startCoordinates, parkings.endCoordinates)
+    this.setState({
+      parkingId: parking._id
+    })
+    console.log("clicked mark's parkingId", this.state.parkingId)
   }
 /////////////////////////////////////////////////RENDER
   render() {
@@ -64,6 +68,7 @@ class TheMap extends Component {
         <Layer
           type="symbol"
           key={i}
+          id ={parking._id}
           layout={{ "icon-image": "marker-15" }}>
           <Feature
             coordinates={start}
@@ -71,6 +76,24 @@ class TheMap extends Component {
         </Layer>
       )
     })
+
+    const parkingPopups = this.state.parkings.map((parking,i) => {
+      var start = parking.startCoordinates
+      if (this.state.parkingId === parking._id) {
+      return (
+        <Popup
+          key={i}
+          id={parking._id}
+          coordinates={start}
+          offset={{
+            'bottom-left': [12, -38],  'bottom': [0, -38], 'bottom-right': [-12, -38]
+          }}>
+          <p style={{fontSize:"5px"}}>{parking.streetName}<br/>{parking._id}</p>
+        </Popup>
+        )
+      }
+    })
+    console.log("Parking popups are", parkingPopups)
 
     return (
       <div id="map">
@@ -84,6 +107,7 @@ class TheMap extends Component {
           center={[-118.495196, 34.012806]}>
         {streetLines}
         {streetMarks}
+        {parkingPopups}
         {/* <GeoJSONLayer
           data={{
                 "type": "Feature",
@@ -99,33 +123,14 @@ class TheMap extends Component {
           lineLayout= {{ "line-cap": "round", "line-join": "round" }}
           linePaint={{ "line-color": "#00FFFF", "line-width": 2 }}
         /> */}
-        {/* <Marker
-          coordinates={[-118.495196, 34.012806]}
-          anchor="bottom"
-          onClick = {this._showPopup.bind(this)}
-          >
-        </Marker> */}
 
-        {/* <Layer
+         <Layer
           type="symbol"
           id="marker"
-          layout={{ "icon-image": "marker-15" }}>
+          layout={{ "icon-image": "favicon.ico" }}>
           <Feature coordinates={[-118.495196, 34.012806]}/>
         </Layer>
 
-        <Layer
-          type="symbol"
-          id="marker-2"
-          layout={{ "icon-image": "marker-15" }}>
-          <Feature coordinates={[-118.495537,34.013633]}/>
-        </Layer>
-
-        <Layer
-          type="symbol"
-          id="marker-3"
-          layout={{ "icon-image": "marker-15" }}>
-          <Feature coordinates={[-118.493619,34.015078]}/>
-        </Layer> */}
 
         </ReactMapboxGl>
       </div>
