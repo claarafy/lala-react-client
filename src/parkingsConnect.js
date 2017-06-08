@@ -20,9 +20,10 @@ const parkingsConnect = {
       data: locationInfo
     })
   },
-  getParkings: () => {
+  getParkings: (locationId) => {
+    console.log("get Parkings reached with location id", locationId)
     return axios({
-      url: '/api/parkings',
+      url: `/api/locations/${locationId}`,
       method: 'get'
     })
   }

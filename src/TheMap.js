@@ -13,43 +13,56 @@ class TheMap extends Component {
     super()
     this.state = {
       setCoordinates: [-118.495196, 34.012806], //Santa Monica
-      locationId: "",
+      locationId: null,
       parkings: [],
-      parkingId: ""
+      parkingId: "",
+      adminId: "5934ee473dbbf65bc674b457",
+      currentUser: null,
+      loggedIn: false,
+      zoom: [0]
     }
   }
 /////////////////////////////////////////////////LIFECYCLE
   componentDidMount() {
-    parkingsConnect.getParkings().then((res) => {
-      this.setState({
-        parkings: res.data
-      })
-    })
+    // parkingsConnect.getParkings().then((res) => {
+    //   this.setState({
+    //     parkings: res.data
+    //   })
+    // })
   }
 /////////////////////////////////////////////////CUSTOM FUNCTIONS
   _showPopup(parking) {
     this.setState({
       parkingId: parking._id
     })
-
   }
-  _searchLocation(evt){
+
+  _searchLocation(evt) {
     evt.preventDefault()
     const locationInfo = {
       name: this.refs.location.value,
       coordinates: []
     }
     console.log(locationInfo)
+
     parkingsConnect.addLocation(locationInfo).then((res)=> {
-      console.log(res.data.location.coordinates)
+      console.log(res.data.location)
       this.setState({
-        setCoordinates: res.data.location.coordinates
+        setCoordinates: res.data.location.coordinates,
+        zoom: [13],
+        locationId: res.data.location._id
+      })
+      parkingsConnect.getParkings(this.state.locationId).then((res) => {
+        console.log("getting all parkings to this location", res.data.parkings)
+        this.setState({
+          parkings: res.data.parkings
+        })
       })
     })
   }
 /////////////////////////////////////////////////RENDER
   render() {
-    console.log("this location's parkings are:", this.state.parkings)
+    // console.log("this location's parkings are:", this.state.parkings)
     const streetLines = this.state.parkings.map((parking, i) => {
       var start = parking.startCoordinates
       var end = parking.endCoordinates
@@ -121,7 +134,8 @@ class TheMap extends Component {
             height: "70vh",
             width: "100vw"
           }}
-          center={this.state.setCoordinates}>
+          center={this.state.setCoordinates}
+          zoom={this.state.zoom}>
           {streetLines}
           {streetMarks}
           {parkingPopups}
