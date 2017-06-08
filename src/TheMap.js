@@ -5,7 +5,6 @@ import './App.css'
 import ReactMapboxGl, {Source, Layer, Feature, GeoJSONLayer, Popup, Marker} from "react-mapbox-gl"
 import clientAuth from './clientAuth.js'
 import parkingsConnect from './parkingsConnect.js'
-import maki from 'maki'
 
 class TheMap extends Component {
 /////////////////////////////////////////////////CONSTRUCTOR
