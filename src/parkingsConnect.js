@@ -3,7 +3,7 @@ import jwt_decode from 'jwt-decode'
 import clientAuth from './clientAuth'
 
 
-axios.defaults.baseURL = 'http://localhost:3001'
+axios.defaults.baseURL = 'http://localhost:3001' || 'https://fierce-chamber-43868.herokuapp.com'
 
 const parkingsConnect = {
   getLocations: () => {
