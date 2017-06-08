@@ -16,7 +16,6 @@ class TheMap extends Component {
       locationId: "",
       parkings: [],
       parkingId: ""
-
     }
   }
 /////////////////////////////////////////////////LIFECYCLE
@@ -42,7 +41,10 @@ class TheMap extends Component {
     }
     console.log(locationInfo)
     parkingsConnect.addLocation(locationInfo).then((res)=> {
-      console.log(res)
+      console.log(res.data.location.coordinates)
+      this.setState({
+        setCoordinates: res.data.location.coordinates
+      })
     })
   }
 /////////////////////////////////////////////////RENDER
