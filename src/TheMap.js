@@ -60,9 +60,19 @@ class TheMap extends Component {
       })
     })
   }
+
+  _deleteParking(parkingId) {
+    console.log("I'm gonna delete this parking sign in location", this.state.locationId, "parking id is",  parkingId)
+    parkingsConnect.deleteParking(this.state.locationId, parkingId).then((res) => {
+      this.setState({
+        parkings: this.state.parkings.filter((parking) => {
+          return parking._id !== parkingId
+        })
+      })
+    })
+  }
 /////////////////////////////////////////////////RENDER
   render() {
-    // console.log("this location's parkings are:", this.state.parkings)
     const streetLines = this.state.parkings.map((parking, i) => {
       var start = parking.startCoordinates
       var end = parking.endCoordinates
@@ -119,6 +129,8 @@ class TheMap extends Component {
           }}>
           <div className="parking-popups">
             <p style={{fontSize:"5px"}}>{parking._id}<br/>{parking.streetName}</p>
+            <button >Edit</button>
+            <button onClick={this._deleteParking.bind(this, parking._id)}>Delete</button>
           </div>
         </Popup>
         )

@@ -26,6 +26,13 @@ const parkingsConnect = {
       url: `/api/locations/${locationId}`,
       method: 'get'
     })
+  },
+  deleteParking: (locationId, parkingId) => {
+    console.log("location id received:",locationId, "parking id received", parkingId)
+    return axios({
+      url:`/api/locations/${locationId}/parkings/${parkingId}`,
+      method: 'delete'
+    })
   }
 }
 
