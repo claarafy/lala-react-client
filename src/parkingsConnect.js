@@ -12,6 +12,7 @@ const parkingsConnect = {
       method: 'get'
     })
   },
+
   addLocation: (locationInfo) => {
     console.log(locationInfo)
     return axios({
@@ -20,6 +21,15 @@ const parkingsConnect = {
       data: locationInfo
     })
   },
+
+  addParking: (locationId, newParkingInfo) => {
+    return axios({
+      url: `/api/locations/${locationId}/parkings`,
+      method: 'post',
+      data: newParkingInfo
+    })
+  },
+
   getParkings: (locationId) => {
     console.log("get Parkings reached with location id", locationId)
     return axios({
@@ -27,6 +37,7 @@ const parkingsConnect = {
       method: 'get'
     })
   },
+
   deleteParking: (locationId, parkingId) => {
     console.log("deleting => location id received:",locationId, "parking id received", parkingId)
     return axios({
@@ -34,6 +45,7 @@ const parkingsConnect = {
       method: 'delete'
     })
   },
+
   editParking: (locationId, parkingId, editParkingInfo) => {
     console.log("editing => location id received:",locationId, "parking id received", parkingId, "new parking info:", editParkingInfo)
     return axios({

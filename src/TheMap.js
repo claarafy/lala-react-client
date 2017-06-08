@@ -13,6 +13,7 @@ class TheMap extends Component {
     super()
     this.state = {
       setCoordinates: [-118.495196, 34.012806], //Santa Monica
+      locations: [],
       locationId: null,
       parkings: [],
       parkingId: "",
@@ -23,15 +24,21 @@ class TheMap extends Component {
       editing: "",
       view: 'hidden',
 
+
+      cleaningDaySelect: "Monday",
+      timeAvailableFrom: "am",
+      timeAvailableTo: "pm",
+      meterParking: "true",
+
     }
   }
 /////////////////////////////////////////////////LIFECYCLE
   componentDidMount() {
-    // parkingsConnect.getParkings().then((res) => {
-    //   this.setState({
-    //     parkings: res.data
-    //   })
-    // })
+    parkingsConnect.getLocations().then((res) => {
+      this.setState({
+        locations: res.data
+      })
+    })
   }
 /////////////////////////////////////////////////CUSTOM FUNCTIONS
   _showPopup(parking) {
@@ -99,6 +106,31 @@ class TheMap extends Component {
      })
     })
   }
+  _handleCleaningDayChange(evt) {
+    this.setState({
+      cleaningDaySelect: evt.target.value
+    })
+  }
+  _handleTimeAvailableFromChange(evt) {
+    console.log("evt", evt.target.value)
+    this.setState({
+      timeAvailableFrom: evt.target.value
+    })
+    console.log("currentState",this.state.timeAvailableFrom)
+  }
+  _handleTimeAvailableToChange(evt) {
+    this.setState({
+      timeAvailableTo: evt.target.value
+    })
+    console.log(this.state.timeAvailableTo)
+  }
+  _handleMeterChange(evt) {
+    this.setState({
+      meterParking: evt.target.value
+    })
+    console.log(this.state.meterParking)
+  }
+
 /////////////////////////////////////////////////RENDER
   render() {
     const streetLines = this.state.parkings.map((parking, i) => {
@@ -170,6 +202,11 @@ class TheMap extends Component {
         )
       }
     })
+    const currentLocation = this.state.locations.map((location) => {
+      if(location._id === this.state.locationId) {
+        return location.name
+      }
+    })
 
 /////////////////////////////////////RENDER'S RETURN
     return (
@@ -202,7 +239,71 @@ class TheMap extends Component {
             <button type="submit">Search Location</button>
           </form>
         </div>
+
+
+        <div id="new-parking">
+          <form id="new-parking-form">
+            <p>Add New Parking:</p>
+            <p>Location is: {currentLocation}</p>
+            <input type="text" placeholder="Street Name" ref="streetName"/>
+            Start Coordinates:
+            <input type="number" placeholder="Start longitude" ref="startCoordLng"/> <input type="number" placeholder="Start latitude" ref="startCoordLat"/>
+            End Coordinates:
+            <input type="number" placeholder="End Longitude" ref="endCoordLng"/> <input type="number" placeholder="End Latitude" ref="endCoordLat"/>
+            Duration:
+            <input type="number"  placeholder="How long can you park here?" ref="timeLimit"/>
+            Time Availability:
+            <input type="number" placeholder="From..." ref="availableTimeStart" />
+              <div className="radio">
+                <input type="radio" name="availiable-from" value="am"
+                  checked={this.state.timeAvailableFrom === 'am'} onChange={this._handleTimeAvailableFromChange.bind(this)}/>A.M.
+                <input type="radio" name="availiable-from" value="pm"
+                  checked={this.state.timeAvailableFrom === 'pm'} onChange={this._handleTimeAvailableFromChange.bind(this)}/>P.M.
+              </div>
+            <input type="number" placeholder="To..." ref="availableTimeEnd" />
+              <div className="radio">
+                <input type="radio" name="availiable-to" value="am"
+                checked={this.state.timeAvailableTo === 'am'} onChange={this._handleTimeAvailableToChange.bind(this)} />A.M.
+                <input type="radio" name="availiable-to" value="pm"
+                checked={this.state.timeAvailableTo === 'pm'} onChange={this._handleTimeAvailableToChange.bind(this)} />P.M. <br/>
+              </div>
+            Meter Parking: <br/>
+              <div className="radio">
+                <input type="radio" name="meter-parking" value="true"
+                  checked={this.state.meterParking === "true"} onChange={this._handleMeterChange.bind(this)} />Available
+                <input type="radio" name="meter-parking" value="false"
+                  checked={this.state.meterParking === "false"} onChange={this._handleMeterChange.bind(this)} />Not Available <br/>
+              </div>
+            No Parking Anytime: <br/>
+              <div className="radio">
+                <input type="radio" name="no-parking" value="true" />True
+                <input type="radio" name="no-parking" value="false"/ >False <br/>
+              </div>
+            Street Cleaning:
+            <select value={this.state.cleaningDaySelect} onChange={this._handleCleaningDayChange.bind(this)}>
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+              <option value="Sunday">Sunday</option>
+            </select>
+            <input type="number" placeholder="From..." ref="streetCleaningTimeStart" />
+              <div className="radio">
+                <input type="radio" name="cleaning-from" value="am" />A.M.
+                <input type="radio" name="cleaning-from" value="pm"/ >P.M.
+              </div>
+            <input type="number" placeholder="To..." ref="streetCleaningTimeEnd" />
+              <div className="radio">
+                <input type="radio" name="cleaning-to" value="am" />A.M.
+                <input type="radio" name="cleaning-to" value="pm"/ >P.M. <br/>
+              </div>
+
+          </form>
+        </div>
       </div>
+
     )
   }
 }
