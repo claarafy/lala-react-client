@@ -20,7 +20,9 @@ class TheMap extends Component {
       currentUser: null,
       loggedIn: false,
       zoom: [0],
-      editing: ""
+      editing: "",
+      view: 'hidden',
+
     }
   }
 /////////////////////////////////////////////////LIFECYCLE
@@ -77,9 +79,25 @@ class TheMap extends Component {
       editing: parkingId
     })
   }
-  _editParking(parkingId){
-    console.log("I'm going to edit this parking sing in location", this.state.locationId, "parking id is", parkingId)
+  _editParking(evt){
+    evt.preventDefault()
     console.log("edit parking reached")
+    console.log("I'm going to edit this parking sing in location", this.state.locationId, "parking id is", this.state.editing)
+    const editParkingInfo = {
+      timeLimit: this.refs.timeLimit.value
+    }
+    parkingsConnect.editParking(this.state.locationId, this.state.editing, editParkingInfo).then((res) => {
+      const parkingIndex = this.state.parkings.findIndex((parking) => {
+        return parking._id === this.state.editing
+      })
+     this.setState({
+       parkings: [
+         ...this.state.parkings.slice(0, parkingIndex),
+         res.data.parking,
+         ...this.state.parkings.slice(parkingIndex + 1)
+       ]
+     })
+    })
   }
 /////////////////////////////////////////////////RENDER
   render() {
@@ -138,13 +156,13 @@ class TheMap extends Component {
             'bottom-left': [12, -38],  'bottom': [0, -38], 'bottom-right': [-12, -38]
           }}>
           <div className="parking-popups">
-            <p style={{fontSize:"5px"}} id="parking-info">{parking._id}<br/>{parking.streetName}</p>
+            <p style={{fontSize:"5px"}} id="parking-info">{parking.streetName}<br/>Park for {parking.timeLimit} hours</p>
             <button onClick={this._setEditing.bind(this, parking._id)}>Edit</button>
             {this.state.editing && (
-              <div className="edit-parking">
-                <input type="text" placeholder="Parking sign changes" ref="streetCleaning"/>
-                <button onClick={this._editParking.bind(this, parking._id)}>Update</button>
-              </div>
+              <form  className="edit-parking">
+                Time Limit: <input type="number" placeholder="How long can you park here now?" ref="timeLimit"/>
+                <button onClick={this._editParking.bind(this)}>Update</button>
+              </form>
               )}
             <button onClick={this._deleteParking.bind(this, parking._id)}>Delete</button>
           </div>
