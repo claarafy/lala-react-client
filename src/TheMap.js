@@ -19,7 +19,8 @@ class TheMap extends Component {
       adminId: "5934ee473dbbf65bc674b457",
       currentUser: null,
       loggedIn: false,
-      zoom: [0]
+      zoom: [0],
+      editing: ""
     }
   }
 /////////////////////////////////////////////////LIFECYCLE
@@ -70,6 +71,15 @@ class TheMap extends Component {
         })
       })
     })
+  }
+  _setEditing(parkingId){
+    this.setState({
+      editing: parkingId
+    })
+  }
+  _editParking(parkingId){
+    console.log("I'm going to edit this parking sing in location", this.state.locationId, "parking id is", parkingId)
+    console.log("edit parking reached")
   }
 /////////////////////////////////////////////////RENDER
   render() {
@@ -128,14 +138,21 @@ class TheMap extends Component {
             'bottom-left': [12, -38],  'bottom': [0, -38], 'bottom-right': [-12, -38]
           }}>
           <div className="parking-popups">
-            <p style={{fontSize:"5px"}}>{parking._id}<br/>{parking.streetName}</p>
-            <button >Edit</button>
+            <p style={{fontSize:"5px"}} id="parking-info">{parking._id}<br/>{parking.streetName}</p>
+            <button onClick={this._setEditing.bind(this, parking._id)}>Edit</button>
+            {this.state.editing && (
+              <div className="edit-parking">
+                <input type="text" placeholder="Parking sign changes" ref="streetCleaning"/>
+                <button onClick={this._editParking.bind(this, parking._id)}>Update</button>
+              </div>
+              )}
             <button onClick={this._deleteParking.bind(this, parking._id)}>Delete</button>
           </div>
         </Popup>
         )
       }
     })
+
 /////////////////////////////////////RENDER'S RETURN
     return (
       <div id="map">

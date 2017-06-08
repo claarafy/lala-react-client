@@ -28,10 +28,17 @@ const parkingsConnect = {
     })
   },
   deleteParking: (locationId, parkingId) => {
-    console.log("location id received:",locationId, "parking id received", parkingId)
+    console.log("deleting => location id received:",locationId, "parking id received", parkingId)
     return axios({
       url:`/api/locations/${locationId}/parkings/${parkingId}`,
       method: 'delete'
+    })
+  },
+  editParking: (locationId, parkingId) => {
+    console.log("editing => location id received:",locationId, "parking id received", parkingId)
+    return axios({
+      url: `/api/locations/${locationId}/parkings/${parkingId}`,
+      method: 'patch'
     })
   }
 }
