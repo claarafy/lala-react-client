@@ -48,6 +48,9 @@ class TheMap extends Component {
       parkingId: parking._id
     })
   }
+  _togglePopup() {
+    console.log("toggle popup reached!")
+  }
 
   _searchLocation(evt) {
     evt.preventDefault()
@@ -251,12 +254,14 @@ class TheMap extends Component {
           key={i}
           id={parking._id}
           coordinates={start}
+          className= "show"
           offset={{
             'bottom-left': [12, -38],  'bottom': [0, -38], 'bottom-right': [-12, -38]
           }}>
           <div className="parking-popups">
+            <button onClick={this._togglePopup.bind(this)}></button>
             <p style={{fontSize:"5px"}} id="parking-info">
-              {parking.streetName}<br/>
+              <strong>{parking.streetName}</strong><br/>
               Available from {parking.availableTimeStart} to {parking.availableTimeEnd} <br/>
               For {parking.timeLimit} hours<br/>
               Street cleaning on {parking.streetCleaningDay} from {parking.streetCleaningTimeStart} to {parking.streetCleaningTimeEnd}
