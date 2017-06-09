@@ -3,11 +3,14 @@
 
 ###Introduction
 --
-**NO LALA LAND** is an online map application with street parking information (street cleaning, parking hours, parking fees, etc) in vicinity of the location queried. 
+**NO LALA LAND** is an online map application with street parking information (street cleaning, parking hours, parking fees, etc) in vicinity of the location queried, in purpose of solving street parking problems and preventing parking ticket issues.
 
-Come visit [NO LALA LAND](https://lala-park.herokuapp.com/) now!
+![](nolala.png)
 
-<!--Update as proceed-->
+Come visit [NO LALA LAND](https://lala-park.herokuapp.com/)!
+
+
+
 
 ###Technologies
 --
@@ -41,5 +44,7 @@ Build!
 
 ###Unsolved Problems / Additional Features
 --
-- Search by location and time, with conditional parking data according to the data provided
-- Utitlize user's profile and add login profits
+- Search by location and time, with conditional parking data according to the data provided.
+- Utilize user's profile and add login profits.
+- Use Mongoose geospatial indexing to cover a specific radius vicinity.
+- Use LA street cleaning json data to populate data on the application.
