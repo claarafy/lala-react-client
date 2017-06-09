@@ -144,7 +144,7 @@ class TheMap extends Component {
           res.data.location.parkings[res.data.location.parkings.length - 1]
         ]
       })
-      console.log(this.state.parkings)
+      console.log("after creating a new parking spot", this.state.parkings)
     })
   }
 
@@ -196,6 +196,7 @@ class TheMap extends Component {
   }
 
 /////////////////////////////////////////////////RENDER
+
   render() {
     console.log("there are this many parkings!", this.state.parkings)
     const streetLines = this.state.parkings.map((parking, i) => {
@@ -226,6 +227,7 @@ class TheMap extends Component {
           </GeoJSONLayer>
       )
     })
+
     const streetMarks = this.state.parkings.map((parking,i) => {
       var start = parking.startCoordinates
       return(
