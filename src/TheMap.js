@@ -141,7 +141,7 @@ class TheMap extends Component {
       this.setState({
         parkings: [
           ...this.state.parkings,
-          res.data.location.parkings
+          res.data.location.parkings[res.data.location.parkings.length-1]
         ]
       })
       console.log("after creating a new parking spot", this.state.parkings)
