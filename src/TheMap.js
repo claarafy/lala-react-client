@@ -287,9 +287,9 @@ class TheMap extends Component {
           }}
           center={this.state.setCoordinates}
           zoom={this.state.zoom}>
-          {/* {streetLines}
+          {streetLines}
           {streetMarks}
-          {parkingPopups} */}
+          {parkingPopups}
 
           {/* GA Marker */}
            {/* <Layer
