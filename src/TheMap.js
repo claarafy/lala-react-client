@@ -255,7 +255,12 @@ class TheMap extends Component {
             'bottom-left': [12, -38],  'bottom': [0, -38], 'bottom-right': [-12, -38]
           }}>
           <div className="parking-popups">
-            <p style={{fontSize:"5px"}} id="parking-info">{parking.streetName}<br/>Park for {parking.timeLimit} hours</p>
+            <p style={{fontSize:"5px"}} id="parking-info">
+              {parking.streetName}<br/>
+              Available from {parking.availableTimeStart} to {parking.availableTimeEnd} <br/>
+              For {parking.timeLimit} hours<br/>
+              Street cleaning on {parking.streetCleaningDay} from {parking.streetCleaningTimeStart} to {parking.streetCleaningTimeEnd}
+            </p>
             <button onClick={this._setEditing.bind(this, parking._id)}>Edit</button>
             {this.state.editing && (
               <form  className="edit-parking">
