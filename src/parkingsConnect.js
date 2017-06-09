@@ -5,7 +5,6 @@ import clientAuth from './clientAuth'
 
 axios.defaults.baseURL = 'https://floating-sands-94866.herokuapp.com'
 
-
 const parkingsConnect = {
   getLocations: () => {
     return axios({

@@ -137,13 +137,14 @@ class TheMap extends Component {
       noParking: noParking
     }
     parkingsConnect.addParking(this.state.locationId, newParking).then((res)=> {
-      console.log(res)
+      console.log("response", res)
       this.setState({
         parkings: [
           ...this.state.parkings,
-          res.data.parkings
+          res.data.location.parkings[res.data.location.parkings.length - 1]
         ]
       })
+      console.log(this.state.parkings)
     })
   }
 
@@ -196,6 +197,7 @@ class TheMap extends Component {
 
 /////////////////////////////////////////////////RENDER
   render() {
+    console.log("there are this many parkings!", this.state.parkings)
     const streetLines = this.state.parkings.map((parking, i) => {
       var start = parking.startCoordinates
       var end = parking.endCoordinates
@@ -283,9 +285,9 @@ class TheMap extends Component {
           }}
           center={this.state.setCoordinates}
           zoom={this.state.zoom}>
-          {streetLines}
+          {/* {streetLines}
           {streetMarks}
-          {parkingPopups}
+          {parkingPopups} */}
 
           {/* GA Marker */}
            {/* <Layer
