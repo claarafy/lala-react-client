@@ -65,10 +65,13 @@ class TheMap extends Component {
         locationId: res.data.location._id
       })
       parkingsConnect.getParkings(this.state.locationId).then((res) => {
-        console.log("getting all parkings to this location", res.data.parkings)
-        this.setState({
-          parkings: res.data.parkings
-        })
+        console.log("getting all parkings to this location", res.data)
+        // this.setState({
+        //   parkings: [
+        //     ...this.state.parkings,
+        //     res.data.parkings
+        //   ]
+        // })
       })
     })
   }
