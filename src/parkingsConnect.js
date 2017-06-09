@@ -2,9 +2,10 @@ import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 import clientAuth from './clientAuth'
 
+//
+// axios.defaults.baseURL = 'https://floating-sands-94866.herokuapp.com'
 
-axios.defaults.baseURL = 'https://floating-sands-94866.herokuapp.com'
-
+axios.defaults.baseURL = 'http://localhost:3001'
 
 const parkingsConnect = {
   getLocations: () => {

@@ -1,7 +1,33 @@
 .App {
   text-align: center;
+  font-family: 'Inconsolata', monospace;
+  /*font-family: 'El Messiri', sans-serif;*/
+  /*font-family: 'Amatic SC', cursive;*/
 }
-
+#App-name{
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 45px;
+  color: tomato;
+  letter-spacing: 2px;
+  text-shadow: 1.5px 1.5px gold;
+  margin-bottom: 0;
+}
+#App-sub{
+  font-family: 'Open Sans Condensed', sans-serif;
+  margin-bottom: 2px;
+  width: 30%;
+  margin-top: 0;
+  margin-left: 43%;
+  font-size: 7px;
+}
+.logout{
+  color: grey;
+  float:right;
+}
+.button.button-clear, button.button-clear {
+  color: grey;
+}
 /*.App-header {
   background-color: #aaa;
   height: 50px;
@@ -23,6 +49,9 @@
 .hide{
   display: none;
 }
+.show{
+  display: inherit;
+}
 
 #location-form {
   width: 30%;
@@ -36,4 +65,31 @@
 #new-parking-form {
   width: 30%;
   margin-right: 68%;
+}
+.mapbox-popups{
+  width:13%;
+  position: absolute;
+}
+.editButton{
+  display: inline;
+  position: absolute;
+  transition: .5s ease;
+  top: 70%;
+  left: 5%;
+}
+.deleteButton{
+  display: inline;
+  position: absolute;
+  transition: .5s ease;
+  top: 70%;
+  right: 5%;
+}
+.updateButton{
+  top: 50%;
+}
+#new-parking-form {
+  margin: 0 auto;
+  border: 1px dotted grey;
+  border-radius: 5px;
+  padding:2%;
 }

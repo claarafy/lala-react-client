@@ -70,7 +70,8 @@ _setView(evt) {
     return (
       <div className="App">
         <div className="App-header">
-          <h2>NO LALA LAND</h2>
+          <h2 id="App-name">NO LALA LAND</h2>
+          <p id="App-sub">Reality is harsh.</p>
         </div>
         <div className="row" id="navbar">
           <div className="column column-offset-55">
@@ -81,7 +82,7 @@ _setView(evt) {
             <button name='login' className="button button-clear" onClick={this._setView.bind(this)}>Login</button>
             )}
             {this.state.loggedIn && (
-            <button className="button button-clear" onClick={this._logOut.bind(this)}>Log Out</button>
+            <button className="logout button button-clear" onClick={this._logOut.bind(this)}>Log Out</button>
             )}
           </div>
         </div>

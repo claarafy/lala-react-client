@@ -21,7 +21,7 @@ class TheMap extends Component {
       loggedIn: false,
       zoom: [0],
       editing: "",
-      view: 'hidden',
+      popupView: true,
 
 
 
@@ -43,15 +43,6 @@ class TheMap extends Component {
     })
   }
 /////////////////////////////////////////////////CUSTOM FUNCTIONS
-  _showPopup(parking) {
-    this.setState({
-      parkingId: parking._id
-    })
-  }
-  _togglePopup() {
-    console.log("toggle popup reached!")
-  }
-
   _searchLocation(evt) {
     evt.preventDefault()
     const locationInfo = {
@@ -197,6 +188,19 @@ class TheMap extends Component {
     })
     console.log(this.state.cleaningTo)
   }
+  _showPopup(parking) {
+    this.setState({
+      parkingId: parking._id
+    })
+  }
+  _togglePopup(evt) {
+    // console.log(evt.target)
+    // this.setState({
+    //   popupView: !this.state.popupView
+    // })
+    // console.log(this.state.popupView)
+  }
+
 
 /////////////////////////////////////////////////RENDER
 
@@ -254,26 +258,27 @@ class TheMap extends Component {
           key={i}
           id={parking._id}
           coordinates={start}
-          className= "show"
+          className= "mapbox-popups"
           offset={{
             'bottom-left': [12, -38],  'bottom': [0, -38], 'bottom-right': [-12, -38]
-          }}>
+          }}
+          >
           <div className="parking-popups">
-            <button onClick={this._togglePopup.bind(this)}></button>
+            {/* <p onClick={this._togglePopup.bind(this)}>Close</p> */}
             <p style={{fontSize:"5px"}} id="parking-info">
               <strong>{parking.streetName}</strong><br/>
               Available from {parking.availableTimeStart} to {parking.availableTimeEnd} <br/>
               For {parking.timeLimit} hours<br/>
               Street cleaning on {parking.streetCleaningDay} from {parking.streetCleaningTimeStart} to {parking.streetCleaningTimeEnd}
             </p>
-            <button onClick={this._setEditing.bind(this, parking._id)}>Edit</button>
+            <button className="button button-clear editButton" onClick={this._setEditing.bind(this, parking._id)}>/</button>
             {this.state.editing && (
               <form  className="edit-parking">
                 Time Limit: <input type="number" placeholder="How long can you park here now?" ref="timeLimit"/>
-                <button onClick={this._editParking.bind(this)}>Update</button>
+                <button className="button button-clear updateButton" onClick={this._editParking.bind(this)}>V</button>
               </form>
               )}
-            <button onClick={this._deleteParking.bind(this, parking._id)}>Delete</button>
+            <button className="button button-clear deleteButton" onClick={this._deleteParking.bind(this, parking._id)}>X</button>
           </div>
         </Popup>
         )
@@ -297,6 +302,7 @@ class TheMap extends Component {
           }}
           center={this.state.setCoordinates}
           zoom={this.state.zoom}>
+
           {streetLines}
           {streetMarks}
           {parkingPopups}
@@ -313,7 +319,7 @@ class TheMap extends Component {
         <div id="location">
           <form id="location-form" onSubmit={this._searchLocation.bind(this)}>
             <input type="text" placeholder="Where to?" ref="location"/>
-            <button type="submit">Search Location</button>
+            <button className="button button-outline" type="submit">Search Location</button>
           </form>
         </div>
 
