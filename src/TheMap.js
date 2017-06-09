@@ -16,7 +16,7 @@ class TheMap extends Component {
       locationId: null,
       parkings: [],
       parkingId: "",
-      adminId: "5934ee473dbbf65bc674b457",
+      adminId: "5939c72d2e357d000445ad0b",
       currentUser: null,
       loggedIn: false,
       zoom: [0],
@@ -24,11 +24,14 @@ class TheMap extends Component {
       view: 'hidden',
 
 
-      cleaningDaySelect: "Monday",
+
       timeAvailableFrom: "am",
       timeAvailableTo: "pm",
       meterParking: "true",
-
+      noParking: "true",
+      cleaningDaySelect: "Monday",
+      cleaningFrom: "am",
+      cleaningTo: "am"
     }
   }
 /////////////////////////////////////////////////LIFECYCLE
@@ -105,18 +108,55 @@ class TheMap extends Component {
      })
     })
   }
-  _handleCleaningDayChange(evt) {
-    this.setState({
-      cleaningDaySelect: evt.target.value
+  _addParking(evt) {
+    evt.preventDefault()
+    console.log(evt)
+    var meterParking
+    var noParking
+    if (this.state.meterParking === "true") {
+      meterParking = true
+    } else {
+      meterParking = false
+    }
+    if (this.state.noParking === "true") {
+      noParking = true
+    } else {
+      noParking = false
+    }
+    const newParking = {
+      streetName: this.refs.streetName.value,
+      startCoordinates: [this.refs.startCoordLng.value, this.refs.startCoordLat.value],
+      endCoordinates: [this.refs.endCoordLng.value, this.refs.endCoordLat.value],
+      timeLimit: this.refs.timeLimit.value,
+      availableTimeStart: this.refs.availableTimeStart.value,
+      availableTimeEnd: this.refs.availableTimeEnd.value,
+      meterParking: meterParking,
+      streetCleaningDay: this.state.cleaningDaySelect,
+      streetCleaningTimeStart: this.refs.streetCleaningTimeStart.value,
+      streetCleaningTimeEnd: this.refs.streetCleaningTimeEnd.value,
+      noParking: noParking
+    }
+    parkingsConnect.addParking(this.state.locationId, newParking).then((res)=> {
+      console.log(res)
+      this.setState({
+        parkings: [
+          ...this.state.parkings,
+          res.data.location.parkings
+        ]
+      })
     })
   }
+
   _handleTimeAvailableFromChange(evt) {
     console.log("evt", evt.target.value)
     this.setState({
       timeAvailableFrom: evt.target.value
+    }, () => {
+      console.log("currentState",this.state.timeAvailableFrom)
     })
-    console.log("currentState",this.state.timeAvailableFrom)
   }
+
+
   _handleTimeAvailableToChange(evt) {
     this.setState({
       timeAvailableTo: evt.target.value
@@ -128,6 +168,30 @@ class TheMap extends Component {
       meterParking: evt.target.value
     })
     console.log(this.state.meterParking)
+  }
+  _handleNoParkingChange(evt) {
+    this.setState({
+      noParking: evt.target.value
+    })
+    console.log(this.state.noParking)
+  }
+  _handleCleaningDayChange(evt) {
+    this.setState({
+      cleaningDaySelect: evt.target.value
+    })
+    console.log(this.state.cleaningDaySelect)
+  }
+  _handleCleaningFromChange(evt) {
+    this.setState({
+      cleaningFrom: evt.target.value
+    })
+    console.log(this.state.cleaningFrom)
+  }
+  _handleCleaningToChange(evt){
+    this.setState({
+      cleaningTo: evt.target.value
+    })
+    console.log(this.state.cleaningTo)
   }
 
 /////////////////////////////////////////////////RENDER
@@ -241,10 +305,10 @@ class TheMap extends Component {
 
 
         <div id="new-parking">
-          <form id="new-parking-form">
+          <form id="new-parking-form" onSubmit={this._addParking.bind(this)} noValidate>
             <p>Add New Parking:</p>
             <p>Location is: {currentLocation}</p>
-            <input type="text" placeholder="Street Name" ref="streetName"/>
+            <input type="text" placeholder="Street Name" ref="streetName" />
             Start Coordinates:
             <input type="number" placeholder="Start longitude" ref="startCoordLng"/> <input type="number" placeholder="Start latitude" ref="startCoordLat"/>
             End Coordinates:
@@ -275,8 +339,10 @@ class TheMap extends Component {
               </div>
             No Parking Anytime: <br/>
               <div className="radio">
-                <input type="radio" name="no-parking" value="true" />True
-                <input type="radio" name="no-parking" value="false"/ >False <br/>
+                <input type="radio" name="no-parking" value="true"
+                checked={this.state.noParking === "true"} onChange ={this._handleNoParkingChange.bind(this)}/>True
+                <input type="radio" name="no-parking" value="false"
+                checked={this.state.noParking === "false"} onChange={this._handleNoParkingChange.bind(this)}/>False <br/>
               </div>
             Street Cleaning:
             <select value={this.state.cleaningDaySelect} onChange={this._handleCleaningDayChange.bind(this)}>
@@ -290,15 +356,19 @@ class TheMap extends Component {
             </select>
             <input type="number" placeholder="From..." ref="streetCleaningTimeStart" />
               <div className="radio">
-                <input type="radio" name="cleaning-from" value="am" />A.M.
-                <input type="radio" name="cleaning-from" value="pm"/ >P.M.
+                <input type="radio" name="cleaning-from" value="am"
+                checked={this.state.cleaningFrom === "am"} onChange={this._handleCleaningFromChange.bind(this)}/>A.M.
+                <input type="radio" name="cleaning-from" value="pm"
+                checked={this.state.cleaningFrom === "pm"} onChange={this._handleCleaningFromChange.bind(this)}/>P.M.<br/>
               </div>
             <input type="number" placeholder="To..." ref="streetCleaningTimeEnd" />
               <div className="radio">
-                <input type="radio" name="cleaning-to" value="am" />A.M.
-                <input type="radio" name="cleaning-to" value="pm"/ >P.M. <br/>
+                <input type="radio" name="cleaning-to" value="am"
+                checked={this.state.cleaningTo === "am"} onChange={this._handleCleaningToChange.bind(this)}/>A.M.
+                <input type="radio" name="cleaning-to" value="pm"
+                checked={this.state.cleaningTo === "pm"} onChange={this._handleCleaningToChange.bind(this)}/>P.M. <br/>
               </div>
-
+            <button type="submit">Add New Parking</button>
           </form>
         </div>
       </div>

@@ -5,6 +5,7 @@ import clientAuth from './clientAuth'
 
 axios.defaults.baseURL = 'https://floating-sands-94866.herokuapp.com'
 
+
 const parkingsConnect = {
   getLocations: () => {
     return axios({
@@ -23,6 +24,7 @@ const parkingsConnect = {
   },
 
   addParking: (locationId, newParkingInfo) => {
+    console.log("location id is", locationId, "new parking", newParkingInfo)
     return axios({
       url: `/api/locations/${locationId}/parkings`,
       method: 'post',
