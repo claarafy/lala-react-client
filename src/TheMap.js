@@ -141,7 +141,7 @@ class TheMap extends Component {
       this.setState({
         parkings: [
           ...this.state.parkings,
-          res.data.location.parkings
+          res.data.parkings
         ]
       })
     })
