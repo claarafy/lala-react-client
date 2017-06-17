@@ -1,7 +1,7 @@
 # PROJECT 04: NO LALA LAND
 ---
 
-##Introduction
+## Introduction
 **NO LALA LAND** is an online map application with street parking information (street cleaning, parking hours, parking fees, etc) in vicinity of the location queried, in purpose of solving street parking problems and preventing parking ticket issues.
 
 ![](public/nolala.png)
@@ -9,11 +9,11 @@
 Come visit [NO LALA LAND](https://lala-park.herokuapp.com/) here!
 
 
-##Technologies
+## Technologies
 Mongoose, Express, React.js with ES6, Node.js, Milligram <br>
 3rd party API: Mapbox
 
-##Approaches Taken
+## Approaches Taken
 
 **1. Conecpt**<br>
 	Brainstorm couple of web application ideas I had throughout the course and research the web for existing application with similar concepts. <br>
@@ -27,7 +27,7 @@ Set the MVP for the application considering the scope of the project and time ac
 Build!
 
 
-##Project Organization
+## Project Organization
 **ERD Modeling**
 ![](public/Project04_model.png)
 
@@ -38,7 +38,7 @@ Build!
 
 [Trello Board](https://trello.com/b/pg3n0e4l/project-04-la-la-park)
 
-##Unsolved Problems / Additional Features
+## Unsolved Problems / Additional Features
 - Search by location and time, with conditional parking data according to the data provided.
 - Use React Native to make it a mobile application.
 - Utilize user's profile and add login profits.
