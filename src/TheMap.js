@@ -18,12 +18,12 @@ class TheMap extends Component {
       parkingId: "",
       adminId: "5939c72d2e357d000445ad0b",
       currentUser: null,
+      currentUserId: null,
+      isAdmin: false,
       loggedIn: false,
       zoom: [0],
       editing: "",
       popupView: true,
-
-
 
       timeAvailableFrom: "am",
       timeAvailableTo: "pm",
@@ -36,6 +36,15 @@ class TheMap extends Component {
   }
 /////////////////////////////////////////////////LIFECYCLE
   componentDidMount() {
+    //set current user
+    const currentUser = clientAuth.getCurrentUser()
+    this.setState({
+      currentUser : currentUser,
+      loggedIn: !!currentUser,
+      currentUserId: currentUser? currentUser._id : null
+    })
+
+    //get all locations
     parkingsConnect.getLocations().then((res) => {
       this.setState({
         locations: res.data
@@ -205,6 +214,7 @@ class TheMap extends Component {
 /////////////////////////////////////////////////RENDER
 
   render() {
+
     console.log("there are this many parkings!", this.state.parkings)
     const streetLines = this.state.parkings.map((parking, i) => {
       var start = parking.startCoordinates
@@ -289,6 +299,78 @@ class TheMap extends Component {
         return location.name
       }
     })
+    var newParkingForm
+    if (this.state.currentUserId ==this.state.adminId) {
+      newParkingForm =
+      <div id="new-parking">
+        <form id="new-parking-form" onSubmit={this._addParking.bind(this)} noValidate>
+          <p>Add New Parking:</p>
+          <p>Location is: {currentLocation}</p>
+          <input type="text" placeholder="Street Name" ref="streetName" />
+          Start Coordinates:
+          <input type="number" placeholder="Start longitude" ref="startCoordLng"/> <input type="number" placeholder="Start latitude" ref="startCoordLat"/>
+          End Coordinates:
+          <input type="number" placeholder="End Longitude" ref="endCoordLng"/> <input type="number" placeholder="End Latitude" ref="endCoordLat"/>
+          Duration:
+          <input type="number"  placeholder="How long can you park here?" ref="timeLimit"/>
+          Time Availability:
+          <input type="number" placeholder="From..." ref="availableTimeStart" />
+            <div className="radio">
+              <input type="radio" name="availiable-from" value="am"
+                checked={this.state.timeAvailableFrom === 'am'} onChange={this._handleTimeAvailableFromChange.bind(this)}/>A.M.
+              <input type="radio" name="availiable-from" value="pm"
+                checked={this.state.timeAvailableFrom === 'pm'} onChange={this._handleTimeAvailableFromChange.bind(this)}/>P.M.
+            </div>
+          <input type="number" placeholder="To..." ref="availableTimeEnd" />
+            <div className="radio">
+              <input type="radio" name="availiable-to" value="am"
+              checked={this.state.timeAvailableTo === 'am'} onChange={this._handleTimeAvailableToChange.bind(this)} />A.M.
+              <input type="radio" name="availiable-to" value="pm"
+              checked={this.state.timeAvailableTo === 'pm'} onChange={this._handleTimeAvailableToChange.bind(this)} />P.M. <br/>
+            </div>
+          Meter Parking: <br/>
+            <div className="radio">
+              <input type="radio" name="meter-parking" value="true"
+                checked={this.state.meterParking === "true"} onChange={this._handleMeterChange.bind(this)} />Available
+              <input type="radio" name="meter-parking" value="false"
+                checked={this.state.meterParking === "false"} onChange={this._handleMeterChange.bind(this)} />Not Available <br/>
+            </div>
+          No Parking Anytime: <br/>
+            <div className="radio">
+              <input type="radio" name="no-parking" value="true"
+              checked={this.state.noParking === "true"} onChange ={this._handleNoParkingChange.bind(this)}/>True
+              <input type="radio" name="no-parking" value="false"
+              checked={this.state.noParking === "false"} onChange={this._handleNoParkingChange.bind(this)}/>False <br/>
+            </div>
+          Street Cleaning:
+          <select value={this.state.cleaningDaySelect} onChange={this._handleCleaningDayChange.bind(this)}>
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
+            <option value="Sunday">Sunday</option>
+          </select>
+          <input type="number" placeholder="From..." ref="streetCleaningTimeStart" />
+            <div className="radio">
+              <input type="radio" name="cleaning-from" value="am"
+              checked={this.state.cleaningFrom === "am"} onChange={this._handleCleaningFromChange.bind(this)}/>A.M.
+              <input type="radio" name="cleaning-from" value="pm"
+              checked={this.state.cleaningFrom === "pm"} onChange={this._handleCleaningFromChange.bind(this)}/>P.M.<br/>
+            </div>
+          <input type="number" placeholder="To..." ref="streetCleaningTimeEnd" />
+            <div className="radio">
+              <input type="radio" name="cleaning-to" value="am"
+              checked={this.state.cleaningTo === "am"} onChange={this._handleCleaningToChange.bind(this)}/>A.M.
+              <input type="radio" name="cleaning-to" value="pm"
+              checked={this.state.cleaningTo === "pm"} onChange={this._handleCleaningToChange.bind(this)}/>P.M. <br/>
+            </div>
+          <button type="submit">Add New Parking</button>
+        </form>
+      </div>
+  }
+
 
 /////////////////////////////////////RENDER'S RETURN
     return (
@@ -323,76 +405,9 @@ class TheMap extends Component {
           </form>
         </div>
 
+        {newParkingForm}
 
-        <div id="new-parking">
-          <form id="new-parking-form" onSubmit={this._addParking.bind(this)} noValidate>
-            <p>Add New Parking:</p>
-            <p>Location is: {currentLocation}</p>
-            <input type="text" placeholder="Street Name" ref="streetName" />
-            Start Coordinates:
-            <input type="number" placeholder="Start longitude" ref="startCoordLng"/> <input type="number" placeholder="Start latitude" ref="startCoordLat"/>
-            End Coordinates:
-            <input type="number" placeholder="End Longitude" ref="endCoordLng"/> <input type="number" placeholder="End Latitude" ref="endCoordLat"/>
-            Duration:
-            <input type="number"  placeholder="How long can you park here?" ref="timeLimit"/>
-            Time Availability:
-            <input type="number" placeholder="From..." ref="availableTimeStart" />
-              <div className="radio">
-                <input type="radio" name="availiable-from" value="am"
-                  checked={this.state.timeAvailableFrom === 'am'} onChange={this._handleTimeAvailableFromChange.bind(this)}/>A.M.
-                <input type="radio" name="availiable-from" value="pm"
-                  checked={this.state.timeAvailableFrom === 'pm'} onChange={this._handleTimeAvailableFromChange.bind(this)}/>P.M.
-              </div>
-            <input type="number" placeholder="To..." ref="availableTimeEnd" />
-              <div className="radio">
-                <input type="radio" name="availiable-to" value="am"
-                checked={this.state.timeAvailableTo === 'am'} onChange={this._handleTimeAvailableToChange.bind(this)} />A.M.
-                <input type="radio" name="availiable-to" value="pm"
-                checked={this.state.timeAvailableTo === 'pm'} onChange={this._handleTimeAvailableToChange.bind(this)} />P.M. <br/>
-              </div>
-            Meter Parking: <br/>
-              <div className="radio">
-                <input type="radio" name="meter-parking" value="true"
-                  checked={this.state.meterParking === "true"} onChange={this._handleMeterChange.bind(this)} />Available
-                <input type="radio" name="meter-parking" value="false"
-                  checked={this.state.meterParking === "false"} onChange={this._handleMeterChange.bind(this)} />Not Available <br/>
-              </div>
-            No Parking Anytime: <br/>
-              <div className="radio">
-                <input type="radio" name="no-parking" value="true"
-                checked={this.state.noParking === "true"} onChange ={this._handleNoParkingChange.bind(this)}/>True
-                <input type="radio" name="no-parking" value="false"
-                checked={this.state.noParking === "false"} onChange={this._handleNoParkingChange.bind(this)}/>False <br/>
-              </div>
-            Street Cleaning:
-            <select value={this.state.cleaningDaySelect} onChange={this._handleCleaningDayChange.bind(this)}>
-              <option value="Monday">Monday</option>
-              <option value="Tuesday">Tuesday</option>
-              <option value="Wednesday">Wednesday</option>
-              <option value="Thursday">Thursday</option>
-              <option value="Friday">Friday</option>
-              <option value="Saturday">Saturday</option>
-              <option value="Sunday">Sunday</option>
-            </select>
-            <input type="number" placeholder="From..." ref="streetCleaningTimeStart" />
-              <div className="radio">
-                <input type="radio" name="cleaning-from" value="am"
-                checked={this.state.cleaningFrom === "am"} onChange={this._handleCleaningFromChange.bind(this)}/>A.M.
-                <input type="radio" name="cleaning-from" value="pm"
-                checked={this.state.cleaningFrom === "pm"} onChange={this._handleCleaningFromChange.bind(this)}/>P.M.<br/>
-              </div>
-            <input type="number" placeholder="To..." ref="streetCleaningTimeEnd" />
-              <div className="radio">
-                <input type="radio" name="cleaning-to" value="am"
-                checked={this.state.cleaningTo === "am"} onChange={this._handleCleaningToChange.bind(this)}/>A.M.
-                <input type="radio" name="cleaning-to" value="pm"
-                checked={this.state.cleaningTo === "pm"} onChange={this._handleCleaningToChange.bind(this)}/>P.M. <br/>
-              </div>
-            <button type="submit">Add New Parking</button>
-          </form>
-        </div>
       </div>
-
     )
   }
 }
