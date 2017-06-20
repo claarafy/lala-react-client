@@ -19,8 +19,9 @@ Come visit [NO LALA LAND](https://lala-park.herokuapp.com/) here!
 
 **For Developers:** <br>
 1. Fork and clone my **"lala-client-server"** repository, which has both client-side and server-side of the application. <br>
-2. Run ```nodemon``` command in in **express-server** folder.<br>
-3. Run ```npm start```command in **react-client** folder. 
+2. Run ```mongod``` command in **express-server** directory.<br>
+3. Run ```nodemon``` command in another tab in **express-server** directory.<br>
+4. Run ```npm start```command in **react-client** directory. 
 
 ## Technologies
 This application was built on Node.js, Express, React with ES6, Mongoose, Miligram and Bootstrap styling. Mapbox was used as the 3rd party API.
