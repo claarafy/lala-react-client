@@ -16,7 +16,7 @@ class TheMap extends Component {
       locationId: null,
       parkings: [],
       parkingId: "",
-      adminId: "5939c72d2e357d000445ad0b",
+      adminId: null,
       currentUser: null,
       currentUserId: null,
       isAdmin: false,
@@ -41,7 +41,8 @@ class TheMap extends Component {
     this.setState({
       currentUser : currentUser,
       loggedIn: !!currentUser,
-      currentUserId: currentUser? currentUser._id : null
+      currentUserId: currentUser? currentUser._id : null,
+      adminId: (currentUser._id == "5939c72d2e357d000445ad0b")? "5939c72d2e357d000445ad0b" : null
     })
 
     //get all locations
@@ -214,7 +215,7 @@ class TheMap extends Component {
 /////////////////////////////////////////////////RENDER
 
   render() {
-
+    console.log("admin?", this.state.adminId)
     console.log("there are this many parkings!", this.state.parkings)
     const streetLines = this.state.parkings.map((parking, i) => {
       var start = parking.startCoordinates
@@ -281,14 +282,18 @@ class TheMap extends Component {
               For {parking.timeLimit} hours<br/>
               Street cleaning on {parking.streetCleaningDay} from {parking.streetCleaningTimeStart} to {parking.streetCleaningTimeEnd}
             </p>
-            <button className="button button-clear editButton" onClick={this._setEditing.bind(this, parking._id)}>/</button>
-            {this.state.editing && (
+            {this.state.adminId && (
+              <button className="button button-clear editButton" onClick={this._setEditing.bind(this, parking._id)}>/</button>
+            )}
+            {this.state.adminId && this.state.editing && (
               <form  className="edit-parking">
                 Time Limit: <input type="number" placeholder="How long can you park here now?" ref="timeLimit"/>
                 <button className="button button-clear updateButton" onClick={this._editParking.bind(this)}>V</button>
               </form>
               )}
-            <button className="button button-clear deleteButton" onClick={this._deleteParking.bind(this, parking._id)}>X</button>
+            {this.state.adminId && (
+              <button className="button button-clear deleteButton" onClick={this._deleteParking.bind(this, parking._id)}>X</button>
+            )}
           </div>
         </Popup>
         )
@@ -300,7 +305,7 @@ class TheMap extends Component {
       }
     })
     var newParkingForm
-    if (this.state.currentUserId ==this.state.adminId) {
+    if (this.state.adminId) {
       newParkingForm =
       <div id="new-parking">
         <form id="new-parking-form" onSubmit={this._addParking.bind(this)} noValidate>
