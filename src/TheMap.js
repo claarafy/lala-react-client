@@ -276,7 +276,7 @@ class TheMap extends Component {
           >
           <div className="parking-popups">
             {/* <p onClick={this._togglePopup.bind(this)}>Close</p> */}
-            <p style={{fontSize:"5px"}} id="parking-info">
+            <p style={{fontSize:"10px"}} id="parking-info">
               <strong>{parking.streetName}</strong><br/>
               Available from {parking.availableTimeStart} to {parking.availableTimeEnd} <br/>
               For {parking.timeLimit} hours<br/>
