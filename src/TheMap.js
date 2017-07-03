@@ -42,7 +42,7 @@ class TheMap extends Component {
       currentUser : currentUser,
       loggedIn: !!currentUser,
       currentUserId: currentUser? currentUser._id : null,
-      adminId: (currentUser._id == "5939c72d2e357d000445ad0b")? "5939c72d2e357d000445ad0b" : null
+      adminId: (currentUser && currentUser._id == "5939c72d2e357d000445ad0b")? "5939c72d2e357d000445ad0b" : null
     })
 
     //get all locations
@@ -394,13 +394,6 @@ class TheMap extends Component {
           {streetMarks}
           {parkingPopups}
 
-          {/* GA Marker */}
-           {/* <Layer
-            type="symbol"
-            id="marker"
-            layout={{ "icon-image": "favicon.ico" }}>
-            <Feature coordinates={[-118.495196, 34.012806]}/>
-          </Layer> */}
         </ReactMapboxGl>
 
         <div id="location">
