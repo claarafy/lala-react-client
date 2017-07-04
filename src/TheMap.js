@@ -16,7 +16,7 @@ class TheMap extends Component {
       locationId: null,
       parkings: [],
       parkingId: "",
-      adminId: null,
+      adminId: null, //set to user's id only if admin
       currentUser: null,
       currentUserId: null,
       isAdmin: false,
@@ -31,7 +31,11 @@ class TheMap extends Component {
       noParking: "true",
       cleaningDaySelect: "Monday",
       cleaningFrom: "am",
-      cleaningTo: "am"
+      cleaningTo: "am",
+
+      parkingDaySelect: "Monday",
+      parkingTimeStartSelect: 1,
+      parkWhen: "am"
     }
   }
 /////////////////////////////////////////////////LIFECYCLE
@@ -54,6 +58,7 @@ class TheMap extends Component {
   }
 /////////////////////////////////////////////////CUSTOM FUNCTIONS
   _searchLocation(evt) {
+
     evt.preventDefault()
     const locationInfo = {
       name: this.refs.location.value,
@@ -210,11 +215,30 @@ class TheMap extends Component {
     // })
     // console.log(this.state.popupView)
   }
+  _handleParkingDayChange(evt) {
+    this.setState({
+      parkingDaySelect: evt.target.value
+    })
+    console.log(this.state.parkingDaySelect);
+  }
+  _handleParkingTimeStartChange(evt) {
+    this.setState({
+      parkingTimeStartSelect: evt.target.value
+    })
+    console.log(this.state.parkingTimeStartSelect);
+  }
+  _handleParkingTimeChange(evt) {
+    this.setState({
+      parkWhen: evt.target.value
+    })
+    console.log(this.state.parkWhen);
+  }
 
 
 /////////////////////////////////////////////////RENDER
 
   render() {
+    console.log(this.state);
     console.log("admin?", this.state.adminId)
     console.log("there are this many parkings!", this.state.parkings)
     const streetLines = this.state.parkings.map((parking, i) => {
@@ -223,6 +247,8 @@ class TheMap extends Component {
       var lineColor = "#00FFFF"
       if (parking.noParking == true) {
         lineColor = "#DC143C"
+      } else if (parking.streetCleaningDay == this.state.parkingDaySelect) {
+        lineColor = "#9400D3"
       }
       return (
           <GeoJSONLayer
@@ -399,6 +425,33 @@ class TheMap extends Component {
         <div id="location">
           <form id="location-form" onSubmit={this._searchLocation.bind(this)}>
             <input type="text" placeholder="Where to?" ref="location"/>
+            <select value={this.state.parkingDaySelect} onChange={this._handleParkingDayChange.bind(this)}>
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+              <option value="Sunday">Sunday</option>
+            </select>
+            <select value={this.state.parkingTimeStartSelect} onChange={this._handleParkingTimeStartChange.bind(this)}>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+            </select>
+            <input type="radio" name="park-when" value="am"
+            checked={this.state.parkWhen === 'am'} onChange={this._handleParkingTimeChange.bind(this)} />A.M.
+            <input type="radio" name="park-when" value="pm"
+            checked={this.state.parkWhen === 'pm'} onChange={this._handleParkingTimeChange.bind(this)} />P.M. <br/>
             <button className="button button-outline" type="submit">Search Location</button>
           </form>
         </div>
