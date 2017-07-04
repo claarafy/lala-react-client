@@ -244,11 +244,15 @@ class TheMap extends Component {
     const streetLines = this.state.parkings.map((parking, i) => {
       var start = parking.startCoordinates
       var end = parking.endCoordinates
-      var lineColor = "#00FFFF"
-      if (parking.noParking == true) {
+      var lineColor
+      if (parking.noParking == true) { //if no parking anytime, red line
         lineColor = "#DC143C"
-      } else if (parking.streetCleaningDay == this.state.parkingDaySelect) {
-        lineColor = "#9400D3"
+      }
+      else if (parking.streetCleaningDay == this.state.parkingDaySelect) { //if there's street cleaning on that street same day, yellow line
+        lineColor = "#FFD700"
+      }
+      else if (parking.availableTimeStart <= this.state.parkingTimeStartSelect) { //if parking available that hour, green line
+        lineColor = "#008000"
       }
       return (
           <GeoJSONLayer
@@ -452,7 +456,7 @@ class TheMap extends Component {
             checked={this.state.parkWhen === 'am'} onChange={this._handleParkingTimeChange.bind(this)} />A.M.
             <input type="radio" name="park-when" value="pm"
             checked={this.state.parkWhen === 'pm'} onChange={this._handleParkingTimeChange.bind(this)} />P.M. <br/>
-            <button className="button button-outline" type="submit">Search Location</button>
+            <button className="button button-outline" type="submit">Search Parkings in the Area</button>
           </form>
         </div>
 
