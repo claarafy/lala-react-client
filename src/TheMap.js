@@ -238,7 +238,7 @@ class TheMap extends Component {
 /////////////////////////////////////////////////RENDER
 
   render() {
-    console.log(this.state);
+    console.log("current state", this.state);
     console.log("admin?", this.state.adminId)
     console.log("there are this many parkings!", this.state.parkings)
     const streetLines = this.state.parkings.map((parking, i) => {
@@ -409,6 +409,7 @@ class TheMap extends Component {
 
 /////////////////////////////////////RENDER'S RETURN
     return (
+      <div id="container">
       <div id="map">
         <ReactMapboxGl
           style="mapbox://styles/mapbox/light-v9"
@@ -426,43 +427,59 @@ class TheMap extends Component {
 
         </ReactMapboxGl>
 
-        <div id="location">
-          <form id="location-form" onSubmit={this._searchLocation.bind(this)}>
-            <input type="text" placeholder="Where to?" ref="location"/>
-            <select value={this.state.parkingDaySelect} onChange={this._handleParkingDayChange.bind(this)}>
-              <option value="Monday">Monday</option>
-              <option value="Tuesday">Tuesday</option>
-              <option value="Wednesday">Wednesday</option>
-              <option value="Thursday">Thursday</option>
-              <option value="Friday">Friday</option>
-              <option value="Saturday">Saturday</option>
-              <option value="Sunday">Sunday</option>
-            </select>
-            <select value={this.state.parkingTimeStartSelect} onChange={this._handleParkingTimeStartChange.bind(this)}>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-              <option value="11">11</option>
-              <option value="12">12</option>
-            </select>
-            <input type="radio" name="park-when" value="am"
-            checked={this.state.parkWhen === 'am'} onChange={this._handleParkingTimeChange.bind(this)} />A.M.
-            <input type="radio" name="park-when" value="pm"
-            checked={this.state.parkWhen === 'pm'} onChange={this._handleParkingTimeChange.bind(this)} />P.M. <br/>
-            <button className="button button-outline" type="submit">Search Parkings in the Area</button>
-          </form>
-        </div>
+          <div id="location">
+              <form id="location-form" onSubmit={this._searchLocation.bind(this)}>
+                <div className="row">
+                  <div className="column column-20">
+                    <input type="text" placeholder="Where to?" ref="location"/>
+                  </div>
+                  <div className="column column-20">
+                    <select value={this.state.parkingDaySelect} onChange={this._handleParkingDayChange.bind(this)}>
+                      <option value="Monday">Monday</option>
+                      <option value="Tuesday">Tuesday</option>
+                      <option value="Wednesday">Wednesday</option>
+                      <option value="Thursday">Thursday</option>
+                      <option value="Friday">Friday</option>
+                      <option value="Saturday">Saturday</option>
+                      <option value="Sunday">Sunday</option>
+                    </select>
+                  </div>
+                  <div className="column column-20">
+                    <select value={this.state.parkingTimeStartSelect} onChange={this._handleParkingTimeStartChange.bind(this)}>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                    </select>
+                  </div>
+                  <div className="column column-10">
+                    <input type="radio" name="park-when" value="am"
+                    checked={this.state.parkWhen === 'am'} onChange={this._handleParkingTimeChange.bind(this)} />A.M.
+                    <input type="radio" name="park-when" value="pm"
+                    checked={this.state.parkWhen === 'pm'} onChange={this._handleParkingTimeChange.bind(this)} />P.M. <br/>
+                  </div>
+                  <div className="column column-30">
+                    <button className="button button-outline" type="submit">Search Parkings in the Area</button>
+                  </div>
+                </div>
+            </form>
 
+          </div>
+
+
+        <div id="new-parking">
         {newParkingForm}
-
+        </div>
       </div>
+    </div>
     )
   }
 }
