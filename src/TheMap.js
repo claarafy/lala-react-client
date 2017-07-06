@@ -425,8 +425,8 @@ class TheMap extends Component {
           {streetMarks}
           {parkingPopups}
 
-          {/* {this.state.locationId && (
-            <Popup
+          {/* {this.state.locationId && ( */}
+            {/* <Popup
               style={{
                 marginTop: "20%",
                 marginLeft: "1%"
@@ -437,8 +437,8 @@ class TheMap extends Component {
                 <span id="yellow">YELLOW: Street cleaning same day</span> <br/>
                 <span id="red">RED: No parking anytime </span> <br/>
               </div>
-            </Popup>
-          )} */}
+            </Popup> */}
+          {/* )} */}
 
         </ReactMapboxGl>
 
